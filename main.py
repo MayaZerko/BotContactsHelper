@@ -1,4 +1,4 @@
-CONTACTS = {}
+contacts_dict = {}
 
 
 def hello_func():
@@ -10,17 +10,20 @@ def exit_func():
 
 
 def add_func(name, phone):
-    CONTACTS[name] = phone
+    contacts_dict[name] = phone
 
 
 def change_func(name, phone):
-    CONTACTS[name] = phone
+    contacts_dict[name] = phone
+
 
 def search_func(name):
-    CONTACTS.get(name)
+    contacts_dict.get(name)
+
 
 def show_func():
-    print(CONTACTS)
+    print(contacts_dict)
+
 
 COMMANDS_DICT = {
     'hello': hello_func,
@@ -33,7 +36,38 @@ COMMANDS_DICT = {
 }
 
 
+def change_input(user_input):
+    new_input = user_input
+    data = ''
+    for key in COMMANDS_DICT:
+        if user_input.strip().lower().startswith(key):
+            new_input = key
+            data = user_input[len(new_input):]
+            break
+    if data:
+        return reaction_func(new_input)(data)
+    else:
+        return reaction_func(new_input)()
+
+
+def reaction_func(reaction):
+    return COMMANDS_DICT.get(reaction, break_func)
+
+
+def break_func():
+    """
+    Якщо користувач ввів якусь тарабарщину- повертаємо відповідну відповідь
+    :return: Неправильна команда
+    """
+    print('Wrong enter.')
+
+
 def main():
+    """
+    Основна логика усього застосунку. Отримуємо ввід від користувача
+    і відправляємо його в середину застосунку на обробку.
+    :return:
+    """
     while True:
         """
         Просимо користувача ввести команду для нашого бота
@@ -41,7 +75,9 @@ def main():
         """
 
         user_input = input('Enter command for bot: ')
-        if user_input == 'Good bye':
+        result = change_input(user_input)
+        print(result)
+        if result == 'good bye':
             break
 
 
