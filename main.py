@@ -50,8 +50,7 @@ def add_func(data):
     :return: Відповідь, що контакт створено.
     """
     name, phone = create_data(data)
-    if name.isnumeric():
-        raise ValueError('Wrong name.')
+
     if name in contacts_dict:
         raise ValueError('This contact already exist.')
     contacts_dict[name] = phone
@@ -137,6 +136,10 @@ def create_data(data):
     new_data = data.strip().split(" ")
     name = new_data[0]
     phone = new_data[1]
+    if name.isnumeric():
+        raise ValueError('Wrong name.')
+    if not phone.isnumeric():
+        raise ValueError('Wrong phone.')
     return name, phone
 
 
