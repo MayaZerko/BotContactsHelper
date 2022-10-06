@@ -1,27 +1,84 @@
 contacts_dict = {}
 
 
+def input_error(function):
+    """
+    Створюємо декоратор для обробки помилок, котрі можуть виникнути через
+    ввід користувача.
+    :param function: Функція вводу від користувача.
+    :return: Або роботу функції або текст з помилкою, для повторного вводу.
+    """
+    def wrapper(*args, **kwargs):
+        try:
+            return function(*args, **kwargs)
+        except KeyError:
+            return 'Wrong name'
+        except ValueError:
+            return ValueError.args[0]
+        except IndexError:
+            return 'Pls print: name and number'
+        except TypeError:
+            return 'Wrong command.'
+
+    return wrapper
+
+
+@input_error
 def hello_func():
-    print('How can I help you?')
+    """
+    При отриманні команди привіт- маємо зреагувати правильно.
+    :return:
+    """
+    return 'How can I help you?'
 
 
+@input_error
 def exit_func():
+    """
+    При отриманні слів про вихід з боту- маємо його закрити.
+    :return:
+    """
     quit()
 
 
+@input_error
 def add_func(name, phone):
+    """
+    Додавання нового контакту.
+    :param name: Ім'я контакту.
+    :param phone: Телефон контакту.
+    :return: Відповідь, що контакт створено.
+    """
     contacts_dict[name] = phone
 
 
+@input_error
 def change_func(name, phone):
+    """
+    Зміна вже існуючого контактного номера.
+    :param name: Контакт в котрому потрібно провести зміни.
+    :param phone: Новий номер для контакту.
+    :return: Відповідь про зміни.
+    """
     contacts_dict[name] = phone
 
 
+@input_error
 def search_func(name):
+    """
+    Коли користувач шукає конкретний контакт за ім'ям.
+    :param name: Контакт котрий шукаємо.
+    :return: Номер контакту.
+    """
     contacts_dict.get(name)
 
 
+@input_error
 def show_func():
+    """
+    Показуємо всю книгу контактів створену раніше.
+    :return:
+    """
     print(contacts_dict)
 
 
