@@ -8,6 +8,7 @@ def input_error(function):
     :param function: Функція вводу від користувача.
     :return: Або роботу функції або текст з помилкою, для повторного вводу.
     """
+
     def wrapper(*args, **kwargs):
         try:
             return function(*args, **kwargs)
@@ -48,24 +49,27 @@ def add_func(data):
     :param data: Строка з ім'ям та телефоном.
     :return: Відповідь, що контакт створено.
     """
-    new_data = data.strip().split(" ")
-    name = new_data[0]
-    phone = new_data[1]
+    name, phone = create_data(data)
     if name in contacts_dict:
         raise ValueError('This contact already exist.')
     contacts_dict[name] = phone
-    return f'You add new contact: {name} with this {phone}.'
+    return f'You added new contact: {name} with this {phone}.'
 
 
 @input_error
-def change_func(name, phone):
+def change_func(data):
     """
     Зміна вже існуючого контактного номера.
-    :param name: Контакт в котрому потрібно провести зміни.
-    :param phone: Новий номер для контакту.
+    :param data: Строка з ім'ям та телефоном.
     :return: Відповідь про зміни.
     """
-    contacts_dict[name] = phone
+    name, phone = create_data(data)
+    if name in contacts_dict:
+        contacts_dict[name] = phone
+        return f'You changed number to {phone} for {name}.'
+    else:
+        return 'Use add command plz.'
+
 
 
 @input_error
@@ -114,6 +118,19 @@ def change_input(user_input):
 
 def reaction_func(reaction):
     return COMMANDS_DICT.get(reaction, break_func)
+
+
+def create_data(data):
+    """
+    Розділяє вхідні дані на дві частини - номер і телефон.
+    Для подальшої роботи з ними.
+    :param data: Строка з номером і ім'ям.
+    :return: Вже розділені ім'я і номер
+    """
+    new_data = data.strip().split(" ")
+    name = new_data[0]
+    phone = new_data[1]
+    return name, phone
 
 
 def break_func():
