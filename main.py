@@ -13,8 +13,8 @@ def input_error(function):
             return function(*args, **kwargs)
         except KeyError:
             return 'Wrong name'
-        except ValueError:
-            return ValueError.args[0]
+        except ValueError as exception:
+            return exception.args[0]
         except IndexError:
             return 'Pls print: name and number'
         except TypeError:
@@ -38,18 +38,23 @@ def exit_func():
     При отриманні слів про вихід з боту- маємо його закрити.
     :return:
     """
-    quit()
+    return 'good bye'
 
 
 @input_error
-def add_func(name, phone):
+def add_func(data):
     """
-    Додавання нового контакту.
-    :param name: Ім'я контакту.
-    :param phone: Телефон контакту.
+    Додавання нового контакту. Обробка строки и створення контакту.
+    :param data: Строка з ім'ям та телефоном.
     :return: Відповідь, що контакт створено.
     """
+    new_data = data.strip().split(" ")
+    name = new_data[0]
+    phone = new_data[1]
+    if name in contacts_dict:
+        raise ValueError('This contact already exist.')
     contacts_dict[name] = phone
+    return f'You add new contact: {name} with this {phone}.'
 
 
 @input_error
@@ -116,7 +121,7 @@ def break_func():
     Якщо користувач ввів якусь тарабарщину- повертаємо відповідну відповідь
     :return: Неправильна команда
     """
-    print('Wrong enter.')
+    return 'Wrong enter.'
 
 
 def main():
