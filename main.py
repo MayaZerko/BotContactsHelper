@@ -71,7 +71,6 @@ def change_func(data):
         return 'Use add command plz.'
 
 
-
 @input_error
 def search_func(name):
     """
@@ -79,7 +78,9 @@ def search_func(name):
     :param name: Контакт котрий шукаємо.
     :return: Номер контакту.
     """
-    contacts_dict.get(name)
+    if name.strip() not in contacts_dict:
+        raise ValueError('This contact does not exist.')
+    return contacts_dict.get(name.strip())
 
 
 @input_error
@@ -98,7 +99,8 @@ COMMANDS_DICT = {
     'good bye': exit_func,
     'add': add_func,
     'change': change_func,
-    'show all': show_func
+    'show all': show_func,
+    'phone': search_func
 }
 
 
