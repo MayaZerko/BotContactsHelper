@@ -87,9 +87,12 @@ def search_func(name):
 def show_func():
     """
     Показуємо всю книгу контактів створену раніше.
-    :return:
+    :return: Список контактів.
     """
-    print(contacts_dict)
+    contacts = ''
+    for key, value in contacts_dict.items():
+        contacts += f'{key} : {value} \n'
+    return contacts
 
 
 COMMANDS_DICT = {
