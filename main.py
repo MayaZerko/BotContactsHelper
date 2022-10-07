@@ -68,8 +68,7 @@ def change_func(data):
     if name in contacts_dict:
         contacts_dict[name] = phone
         return f'You changed number to {phone} for {name}.'
-    else:
-        return 'Use add command plz.'
+    return 'Use add command plz.'
 
 
 @input_error
@@ -118,8 +117,7 @@ def change_input(user_input):
             break
     if data:
         return reaction_func(new_input)(data)
-    else:
-        return reaction_func(new_input)()
+    return reaction_func(new_input)()
 
 
 def reaction_func(reaction):
